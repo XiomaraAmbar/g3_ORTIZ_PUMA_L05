@@ -1,7 +1,7 @@
 package LinkedList;
 //Lista enlazada usando un nodo cabecera
 
-public class ListaEnlazada<E>{ //Hereda de la clase Nodo
+public class ListaEnlazada<E> implements ListaTDA<E>{ //Hereda de la clase Nodo
     private Nodo<E> cabecera; //Se crea la variable cabecera de tipo Nodo
 
     public ListaEnlazada(){ //La lista comienza vacía
@@ -164,10 +164,10 @@ public class ListaEnlazada<E>{ //Hereda de la clase Nodo
 
     //Imprime la lista enlazada
     public void print() throws MensajeException{
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
-        if (nodoTemporal.getSiguiente() == null){ //Si la lista esta vacía
+        if (cabecera.getSiguiente() == null){ //Si la lista esta vacía
             throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
         }
+        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         StringBuilder lista = new StringBuilder();
         lista.append("[");
         while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista

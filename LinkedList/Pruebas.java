@@ -43,28 +43,39 @@ public class Pruebas {
 
         //Se busca un elemento por valor
         System.out.println("Busqueda de B: " + listaPrueba1.search("B")); //1
-        System.out.println("Busqueda de L: " + listaPrueba1.search("L")); //Lanza excepción
+        try {
+            System.out.println("Busqueda de B: " + listaPrueba1.search("L")); //Lanza excepción -> mensaje fuera de rango
+        } catch (MensajeException e) {
+            System.out.println("Error al buscar: " + e.getMessage());
+        }
 
         //Se busca un elemento por posicion
         listaPrueba1.searchK(5); //F
-        listaPrueba1.searchK(14); //Lanza excepción -> mensaje fuera de rango
+        try {
+            listaPrueba1.searchK(14); //Lanza excepción -> mensaje fuera de rango
+        } catch (MensajeException e) {
+            System.out.println("Error al buscar: " + e.getMessage());
+        }
 
         //Eliminar un elemento por contenido
+        System.out.println("Eliminación de H: ");
         listaPrueba1.removeNode("H");
         //Se imprime la lista
         listaPrueba1.print(); // A,B,C,D,E,F,I,J,X,Y,Z
         System.out.println("Tamaño de la lista: " + listaPrueba1.length()); //11
 
         //Eliminar un elemento por posicion
+        System.out.println("Eliminación de J en posición 7: ");
         listaPrueba1.removeNodeK(7);
         //Se imprime la lista
         listaPrueba1.print(); // A,B,C,D,E,F,I,X,Y,Z
         System.out.println("Tamaño de la lista: " + listaPrueba1.length()); //10
 
+        System.out.println("La lista esta vacía?: " + listaPrueba1.isEmpty()); //FALSE
+
         //Destruir la lista
         listaPrueba1.destroyList();
-        //Se imprime la lista
-        listaPrueba1.print(); //La lista esta vacía
 
+        System.out.println("La lista esta vacía?: " + listaPrueba1.isEmpty()); //TRUE
     }
 }
