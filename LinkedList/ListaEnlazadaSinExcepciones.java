@@ -1,10 +1,10 @@
 package LinkedList;
 //Lista enlazada usando un nodo cabecera
 
-public class ListaEnlazada<E> implements ListaTDA<E>{
+public class ListaEnlazadaSinExcepciones<E> implements ListaTDA<E>{
     private Nodo<E> cabecera; //Se crea la variable cabecera de tipo Nodo
 
-    public ListaEnlazada(){ //La lista comienza vacía
+    public ListaEnlazadaSinExcepciones(){ //La lista comienza vacía
         cabecera = new Nodo<E>(null);
         cabecera.setSiguiente(null);
     }
@@ -34,10 +34,9 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
     }
 
     //Verifica si el elemento x está en la lista y retorna su posición
-    public int search(E valor) throws MensajeException{
+    public int search(E valor){
         if (isEmpty()){ //Verifica si la lista esta vacía
-            //Si esta vacía lanza una excepción
-            throw new MensajeException("Lista enlazada vacía, no hay elementos.");
+            return -1;
         }
         int posicion = 0; //Se crea una variable posicion que cuente la posicion del nodo
         Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
@@ -48,18 +47,13 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
             nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
             posicion = posicion + 1; //La posicion aumenta en uno
         }
-        throw new MensajeException("No se encontró el valor en la lista enlazada.");
-        //return -1;//Caso contrario retorna -1, no se encontro el elemento o  el nodo
+        return -1;
     }
 
     //Busca el k-ésimo elemento por su posición y retorna el nodo (valor)
-    public E searchK(int k) throws MensajeException{
-        if (isEmpty()){ //Verifica si la lista esta vacía
-            //Si esta vacía lanza una excepción
-            throw new MensajeException("Lista enlazada vacía, no hay elementos.");
-        }
-        else if (k < 0 || k >= length()) {
-            throw new MensajeException("Posición fuera de rango.");
+    public E searchK(int k){
+        if (isEmpty() || k < 0 || k >= length()){ //Verifica si la lista esta vacía o si esta fuera de rango
+            return null;
         }
         int posicionK = 0; //Se crea una variable posicion que cuente la cantidad de nodos
         Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
@@ -70,8 +64,7 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
             nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
             posicionK = posicionK + 1; //Y  posicion se incrementa en uno
         }
-        throw new MensajeException("No se encontró el valor en la lista enlazada.");
-        //return null;
+        return null;
     }
 
     /*
@@ -79,11 +72,9 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
     y que no salga error en los métodos insert o remove,
     en vez de retornar el valor del nodo, retorna el nodo si lo encuentra
      */
-    public Nodo<E> searchNodoK(int k) throws MensajeException {
-        if (isEmpty()) { //Verifica si la lista esta vacía
-            throw new MensajeException("Lista enlazada vacía."); //Si esta vacía lanza una excepción
-        } else if (k < 0 || k >= length()) {
-            throw new MensajeException("Posición fuera de rango.");
+    public Nodo<E> searchNodoK(int k){
+        if (isEmpty() || k < 0 || k >= length()) { //Verifica si la lista esta vacía o si esta fuera de rango
+            return null;
         }
         int posicionK = 0; //Se crea una variable posicion que cuente la cantidad de nodos
         Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
@@ -94,7 +85,7 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
             nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
             posicionK = posicionK + 1; //Y  posicion se incrementa en uno
         }
-        throw new MensajeException("No se encontró el nodo en la lista enlazada.");
+        return null;
     }
 
     //Inserta el nuevo nodo al inicio de la lista
@@ -105,24 +96,23 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
     }
 
     //Inserta el nuevo nodo a una posicion x en la lista
-    public void insertPosicionK(E nuevo, int posicionK) throws MensajeException{
-        Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el valor del nuevo elemento
-        if (isEmpty() || posicionK == 0){ //Si la lista esta vacía
-            insertFirst(nuevo); //Se inserta el nuevo nodo al inicio
-        }
-        else if (posicionK < 0 || posicionK > length()) {
-            throw new MensajeException("Posición fuera de rango.");
-        }
-        else{ //Caso contrario
-            Nodo<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior al nodo del medio
-            Nodo<E> nodoMedio = searchNodoK(posicionK); //El nodo del medio se refiere a el nodo el cual se desplazara de su posición
-            nuevoNodo.setSiguiente(nodoMedio); //El nuevo nodo apuntara al nodo medio (nodo desplazado)
-            nodoAnterior.setSiguiente(nuevoNodo); //El nodo anterior apuntara al nuevo nodo
+    public void insertPosicionK(E nuevo, int posicionK){
+        if (posicionK >= 0 && posicionK <= length()){
+            Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el valor del nuevo elemento
+            if (isEmpty() || posicionK == 0){ //Si la lista esta vacía
+                insertFirst(nuevo); //Se inserta el nuevo nodo al inicio
+            }
+            else{ //Caso contrario
+                Nodo<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior al nodo del medio
+                Nodo<E> nodoMedio = searchNodoK(posicionK); //El nodo del medio se refiere a el nodo el cual se desplazara de su posición
+                nuevoNodo.setSiguiente(nodoMedio); //El nuevo nodo apuntara al nodo medio (nodo desplazado)
+                nodoAnterior.setSiguiente(nuevoNodo); //El nodo anterior apuntara al nuevo nodo
+            }
         }
     }
 
     //Inserta el nuevo nodo al final de la lista
-    public void insertLast(E nuevo) throws MensajeException{
+    public void insertLast(E nuevo){
         Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el nuevo elemento
         nuevoNodo.setSiguiente(null); //El siguiente del nuevo nodo apunta a null
         if (isEmpty()){ //Si la lista esta vacía
@@ -137,39 +127,31 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
     }
 
     //Elimina un nodo de la lista enlazada por contenido (valor)
-    public void removeNode(E nodo) throws MensajeException{
-        if (isEmpty()){ //Verifica si la lista esta vacía
-            //Si esta vacía lanza una excepción
-            throw new MensajeException("Lista enlazada vacía, no hay elementos que eliminar.");
+    public void removeNode(E nodo){
+        if (!(isEmpty())){
+            int posicionNodo = search(nodo); //La variable posicionNodo sera la posicion del nodo a eliminar en la lista
+            removeNodeK(posicionNodo); //Se llama al método removeNodoK, ya que se tiene la posicion lo  elimina
         }
-        int posicionNodo = search(nodo); //La variable posicionNodo sera la posicion del nodo a eliminar en la lista
-        removeNodeK(posicionNodo);
     }
 
     //Elimina un nodo de la lista enlazada por posición
-    public void removeNodeK(int posicionK) throws MensajeException{
-        if (isEmpty()){ //Verifica si la lista esta vacía
-            //Si esta vacía lanza una excepción
-            throw new MensajeException("Lista enlazada vacía, no hay elementos que eliminar.");
-        }
-        else if (posicionK < 0 || posicionK >= length()) {
-            throw new MensajeException("Posición fuera de rango.");
-        } else if (posicionK == 0) {
-            cabecera.setSiguiente(cabecera.getSiguiente().getSiguiente());
-            return;
-        }
-        Nodo<E> nodoEliminado = searchNodoK(posicionK); //nodoEliminado es el nodo en la posicion del nodo que se quiere eliminar
-        if (nodoEliminado != null){
-            Nodo<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior que apunta al nodo que se quiere eliminar
-            nodoAnterior.setSiguiente(nodoEliminado.getSiguiente()); //El nodo anterior al nodo eliminado apunta al siguiente del nodo eliminado
+    public void removeNodeK(int posicionK){
+        if (!(isEmpty()) && posicionK >= 0 && posicionK < length()){
+            if (posicionK == 0){
+                cabecera.setSiguiente(cabecera.getSiguiente().getSiguiente());
+            }
+            else {
+                Nodo<E> nodoEliminado = searchNodoK(posicionK); //nodoEliminado es el nodo en la posicion del nodo que se quiere elimina
+                if (nodoEliminado != null){
+                    Nodo<E> nodoAnterior = searchNodoK(posicionK - 1); //El nodo anterior es el nodo anterior que apunta al nodo que se quiere eliminar
+                    nodoAnterior.setSiguiente(nodoEliminado.getSiguiente()); //El nodo anterior al nodo eliminado apunta al siguiente del nodo eliminado
+                }
+            }
         }
     }
 
     //Imprime la lista enlazada
-    public void print() throws MensajeException{
-        if (cabecera.getSiguiente() == null){ //Si la lista esta vacía
-            throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
-        }
+    public void print(){
         System.out.println(toString());
     }
 
