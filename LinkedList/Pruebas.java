@@ -41,6 +41,16 @@ public class Pruebas {
         listaPrueba1.print(); // A,B,C,D,E,F, H,I,J,X,Y,Z
         System.out.println("Tamaño de la lista: " + listaPrueba1.length()); //12
 
+        /*
+        //PRUEBA CON POSICION 0
+
+        listaPrueba1.insertPosicionK("J",0);
+
+        //Se imprime la lista
+        listaPrueba1.print(); // J, A,B,C,D,E,F, H,I,J,X,Y,Z
+        System.out.println("Tamaño de la lista: " + listaPrueba1.length()); //13
+        */
+
         //Se busca un elemento por valor
         System.out.println("Busqueda de B: " + listaPrueba1.search("B")); //1
         try {
