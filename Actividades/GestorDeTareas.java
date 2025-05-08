@@ -1,40 +1,41 @@
 package Actividades;
 
-import LinkedList.ListaEnlazadaSinExcepciones;
+import LinkedList.ListaEnlazada;
+import LinkedList.MensajeException;
 
 public class GestorDeTareas {
-    private ListaEnlazadaSinExcepciones<Tarea> tareasPendientes;
-    private ListaEnlazadaSinExcepciones<Tarea> tareasCompletadas;
+    private ListaEnlazada<Tarea> tareasPendientes;
+    private ListaEnlazada<Tarea> tareasCompletadas;
 
     public GestorDeTareas(){
-        tareasPendientes = new ListaEnlazadaSinExcepciones<>();
-        tareasCompletadas = new ListaEnlazadaSinExcepciones<>();
+        tareasPendientes = new ListaEnlazada<>();
+        tareasCompletadas = new ListaEnlazada<>();
     }
 
     //Agrega al final de la lista enlazada.
-    public void agregarTarea(Tarea actividad) {
+    public void agregarTarea(Tarea actividad) throws MensajeException {
         tareasPendientes.insertLast(actividad);
     }
 
     //Elimina la tarea si existe.
-    public boolean eliminarTarea(Tarea actividad){
+    public boolean eliminarTarea(Tarea actividad) throws MensajeException {
         tareasPendientes.removeNode(actividad);
         tareasCompletadas.removeNode(actividad);
         return true;
     }
 
     //Busca una tarea.
-    public boolean contieneTarea(Tarea actividad){
+    public boolean contieneTarea(Tarea actividad) throws MensajeException {
         return tareasPendientes.search(actividad) != -1 || tareasCompletadas.search(actividad) != -1;
     }
 
     //Imprime todas las tareas.
-    public void imprimirTareas(){
+    public void imprimirTareas() throws MensajeException {
         tareasPendientes.print();
     }
 
     //Cuenta el total de tareas.
-    public int contarTareas(){
+    public int contarTareas() throws MensajeException {
         return tareasPendientes.length() + tareasCompletadas.length();
     }
 
@@ -44,7 +45,7 @@ public class GestorDeTareas {
     }
 
     //Invierte la lista enlazada.
-    public void invertirTareas(){
-        tareasPendientes.printInvertido();
+    public void invertirTareas() throws MensajeException {
+        tareasPendientes.printInverso();
     }
 }

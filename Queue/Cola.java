@@ -1,12 +1,13 @@
 package Queue;
 
-import LinkedList.ListaEnlazadaSinExcepciones;
+import LinkedList.ListaEnlazada;
+import LinkedList.MensajeException;
 
 public class Cola<E> {
-    private ListaEnlazadaSinExcepciones<E> cola;
+    private ListaEnlazada<E> cola;
 
     public Cola(){
-        cola = new ListaEnlazadaSinExcepciones<>();
+        cola = new ListaEnlazada<>();
     }
 
     //Verifica si la cola esta vacía
@@ -15,7 +16,7 @@ public class Cola<E> {
     }
 
     //Agrega el elemento x al final de la cola
-    public void enqueue(E elemento){
+    public void enqueue(E elemento) throws MensajeException {
         if (isEmpty()){
             cola.insertFirst(elemento);
         }
@@ -25,24 +26,35 @@ public class Cola<E> {
     }
 
     //Retorna el elemento que se ubica al inicio de la cola(desencolar)
-    public E dequeue(){
+    public E dequeue() throws MensajeException {
         E primero = front();
         cola.removeNodeK(0);
         return primero;
     }
 
+    //Elimina los elementos de la cola dejándola vacía.
+    public void destroyQueue(){
+        cola.destroyList();
+    }
+
     //Retorna el elemento inicial de la cola
-    public E front(){
+    public E front() throws MensajeException {
         return cola.searchK(0);
     }
 
     //Retorna el elemento final de la cola
-    public E back(){
+    public E back() throws MensajeException {
         return cola.searchK(cola.length()-1);
     }
 
+    //Verifica si la cola está llena o no. Se usa cuando la cola está implementada sobre una
+    //    estructura estática.
+    public void isFull(){
+
+    }
+
     //Imprime la pila
-    public void print(){
+    public void print() throws MensajeException {
         cola.print();
     }
 }

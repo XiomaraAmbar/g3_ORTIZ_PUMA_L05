@@ -1,6 +1,8 @@
 package LinkedList;
 //Lista enlazada usando un nodo cabecera
 
+import Stack.Pila;
+
 public class ListaEnlazada<E> implements ListaTDA<E>{
     private Nodo<E> cabecera; //Se crea la variable cabecera de tipo Nodo
 
@@ -15,8 +17,8 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
     }
 
     //Determina la longitud de elementos de la lista (el tamaño)
-    public int length(){
-        if (isEmpty()){ return 0;}
+    public int length() throws MensajeException{
+        if (isEmpty()){ throw new MensajeException("Lista enlazada vacía, cero elementos.");}
         else {
             int contador = 0; //Se crea una variable contador que cuente la cantidad de nodos
             Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
@@ -48,8 +50,8 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
             nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
             posicion = posicion + 1; //La posicion aumenta en uno
         }
-        throw new MensajeException("No se encontró el valor en la lista enlazada.");
-        //return -1;//Caso contrario retorna -1, no se encontro el elemento o  el nodo
+        //throw new MensajeException("No se encontró el valor en la lista enlazada.");
+        return -1;//Caso contrario retorna -1, no se encontro el elemento o  el nodo
     }
 
     //Busca el k-ésimo elemento por su posición y retorna el nodo (valor)
@@ -165,6 +167,15 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
         }
     }
 
+    //Recorrido de la lista enlazada
+    public void recorridoLista() {
+        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista
+            System.out.println(nodoTemporal.getValor()); //Imprime el valor de cada elemento de la lista
+            nodoTemporal = nodoTemporal.getSiguiente(); //Y el nodo actual pasa a tener el valor del siguiente del nodo actual
+        }
+    }
+
     //Imprime la lista enlazada
     public void print() throws MensajeException{
         if (isEmpty()){ //Si la lista esta vacía
@@ -193,6 +204,23 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
         if(isEmpty()){
             throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
         }
+        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        Pila<E> invertido = new Pila<>(); //Se crea una nueva lista de tipo Pila
 
+        while(nodoTemporal != cabecera){ //Ciclo que verifica que no se llego al inicio de la lista
+            invertido.push(nodoTemporal.getValor());
+            nodoTemporal = nodoTemporal.getSiguiente();
+        }
+
+        StringBuilder listaInvertida = new StringBuilder();
+        listaInvertida.append("[");
+        while (!(invertido.isEmpty())) {
+            listaInvertida.append(invertido.pop()); //Se elimina el tope y se retorna el tope
+            if (!(invertido.isEmpty())) { //Si aun la lista aun no esta vacía, aun hay elementos que sacar
+                listaInvertida.append(", ");
+            }
+        }
+        listaInvertida.append("]");
+        System.out.println(listaInvertida.toString());
     }
 }
