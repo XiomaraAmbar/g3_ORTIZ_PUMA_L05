@@ -1,6 +1,7 @@
 package LinkedList;
 //Lista enlazada usando un nodo cabecera
 
+import Queue.ColaDePrioridad;
 import Stack.Pila;
 
 public class ListaEnlazada<E> implements ListaTDA<E>{
@@ -11,14 +12,34 @@ public class ListaEnlazada<E> implements ListaTDA<E>{
         cabecera.setSiguiente(null);
     }
 
+    //Get de la cabecera de la lista
+    public Nodo<E> getCabecera() {
+        return cabecera;
+    }
+
+    //Set de la cabecera de la lista
+    public void setCabecera(E valorNuevo) {
+        cabecera.setValor(valorNuevo);
+    }
+
+    //Get del sigueinte de la cabecera
+    public Nodo<E> getSiguiente() {
+        return cabecera.getSiguiente();
+    }
+
+    //Set del sigueinte de la cabecera
+    public void setSiguiente(Nodo<E> siguiente) {
+        cabecera.setSiguiente(siguiente);
+    }
+
     //Determina si la lista esta vacía
     public boolean isEmpty(){
         return cabecera.getSiguiente() == null; //Retorna true si esta vacía
     }
 
     //Determina la longitud de elementos de la lista (el tamaño)
-    public int length() throws MensajeException{
-        if (isEmpty()){ throw new MensajeException("Lista enlazada vacía, cero elementos.");}
+    public int length(){
+        if (isEmpty()){ return 0;}
         else {
             int contador = 0; //Se crea una variable contador que cuente la cantidad de nodos
             Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal

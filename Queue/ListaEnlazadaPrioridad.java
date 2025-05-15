@@ -1,18 +1,46 @@
 package Queue;
 //Lista enlazada usando un nodo cabecera
 
-import LinkedList.ListaEnlazada;
-import LinkedList.ListaTDA;
 import LinkedList.MensajeException;
 import LinkedList.Nodo;
 import Stack.Pila;
 
-public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
+public class ListaEnlazadaPrioridad<E> {
     private NodoPrioridad<E> cabecera; //Se crea la variable cabecera de tipo Nodo
 
     public ListaEnlazadaPrioridad(){ //La lista comienza vacía
         cabecera = new NodoPrioridad<>(null,0);
         cabecera.setSiguiente(null);
+    }
+
+    //Get de la cabecera de la lista
+    public NodoPrioridad<E> getCabecera() {
+        return cabecera;
+    }
+
+    //Set de la cabecera de la lista
+    public void setCabecera(E valorNuevo) {
+        cabecera.setValor(valorNuevo);
+    }
+
+    //Getter para mostrar la prioridad de la cabecera
+    public int getPrioridadCabecera() {
+        return cabecera.getPrioridad();
+    }
+
+    //Setter para cambiar la prioridad de la cabecera
+    public void setPrioridadCabecera(int nuevaPrioridad) {
+        cabecera.setPrioridad(nuevaPrioridad);
+    }
+
+    //Get del sigueinte de la cabecera
+    public NodoPrioridad<E> getSiguiente() {
+        return cabecera.getSiguiente();
+    }
+
+    //Set del sigueinte de la cabecera
+    public void setSiguiente(NodoPrioridad<E> siguiente) {
+        cabecera.setSiguiente(siguiente);
     }
 
     //Determina si la lista esta vacía
@@ -21,38 +49,16 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
     }
 
     //Determina la longitud de elementos de la lista (el tamaño)
-    public int length() throws MensajeException {
-        if (isEmpty()){ throw new MensajeException("Lista enlazada vacía, cero elementos.");}
-        else {
-            return lengthPrincipal() + lengthSublistas();
-        }
-    }
-
-    //Determina la longitud de elementos de la lista principal (el tamaño)
-    public int lengthPrincipal() throws MensajeException {
-        if (isEmpty()){ throw new MensajeException("Lista enlazada vacía, cero elementos.");}
+    public int length() {
+        if (isEmpty()){ return 0;}
         else {
             int contador = 0; //Se crea una variable contador que cuente la cantidad de nodos
-            Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+            NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
             while (nodoTemporal != null) { //Ciclo que verifica que no se termino de recorrer la lista
                 nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
-                contador = contador + 1; //Y el contador que cuenta la lista principal se incrementa en uno
+                contador = contador + 1; //Y el contador se incrementa en uno
             }
-            return contador;
-        }
-    }
-
-    //Determina la longitud de elementos de las sublistas (el tamaño)
-    public int lengthSublistas() throws MensajeException {
-        if (isEmpty()){ throw new MensajeException("Lista enlazada vacía, cero elementos.");}
-        else {
-            int contador = 0; //Se crea una variable contador que cuente la cantidad de nodos
-            Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
-            while (nodoTemporal != null) { //Ciclo que verifica que no se termino de recorrer la lista
-                nodoTemporal = nodoTemporal.getSiguiente(); //NodoTemporal ahora tiene el valor del siguiente nodo
-                contador = contador + 1; //Y el contador que cuenta la lista principal se incrementa en uno
-            }
-            return contador;
+            return contador; //Cuando se llega al ultimo nodo de la lista imprime el total
         }
     }
 
@@ -68,7 +74,7 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
             throw new MensajeException("Lista enlazada vacía, no hay elementos.");
         }
         int posicion = 0; //Se crea una variable posicion que cuente la posicion del nodo
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista
             if (nodoTemporal.getValor().equals(valor)){ //Si el valor del nodoTemporal es igual al valor que se busca
                 return posicion; //Retorna la posicion del nodo si son iguales
@@ -90,7 +96,7 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
             throw new MensajeException("Posición fuera de rango.");
         }
         int posicionK = 0; //Se crea una variable posicion que cuente la cantidad de nodos
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista
             if (posicionK == k){ //Compara la posicion actual del nodoTemporal con k
                 return nodoTemporal.getValor(); //Retorna el valor del nodoTemporal o del nodo en la posicion K
@@ -107,14 +113,14 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
     y que no salga error en los métodos insert o remove,
     en vez de retornar el valor del nodo, retorna el nodo si lo encuentra
      */
-    public Nodo<E> searchNodoK(int k) throws MensajeException {
+    public NodoPrioridad<E> searchNodoK(int k) throws MensajeException {
         if (isEmpty()) { //Verifica si la lista esta vacía
             throw new MensajeException("Lista enlazada vacía."); //Si esta vacía lanza una excepción
         } else if (k < 0 || k >= length()) {
             throw new MensajeException("Posición fuera de rango.");
         }
         int posicionK = 0; //Se crea una variable posicion que cuente la cantidad de nodos
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         while (nodoTemporal != null) { //Ciclo que verifica que no se termino de recorrer la lista
             if (posicionK == k) { //Compara la posicion actual del nodoTemporal con k
                 return nodoTemporal; //Retorna el nodo y no el valor
@@ -126,32 +132,32 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
     }
 
     //Inserta el nuevo nodo al inicio de la lista
-    public void insertFirst(E nuevo){
-        Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el valor del nuevo elemento
+    public void insertFirst(E nuevo, int prioridad){
+        NodoPrioridad<E> nuevoNodo = new NodoPrioridad<> (nuevo, prioridad); //Se crea un nuevo nodo con el valor del nuevo elemento
         nuevoNodo.setSiguiente(cabecera.getSiguiente()); // El nuevo nodo apunta al siguiente de cabecera
         cabecera.setSiguiente(nuevoNodo); //Y la cabecera apunta al nuevo nodo
     }
 
     //Inserta el nuevo nodo a una posicion x en la lista
-    public void insertPosicionK(E nuevo, int posicionK) throws MensajeException{
-        Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el valor del nuevo elemento
+    public void insertPosicionK(E nuevo, int prioridad, int posicionK) throws MensajeException{
+        NodoPrioridad<E> nuevoNodo = new NodoPrioridad<> (nuevo, prioridad); //Se crea un nuevo nodo con el valor del nuevo elemento
         if (isEmpty() || posicionK == 0){ //Si la lista esta vacía
-            insertFirst(nuevo); //Se inserta el nuevo nodo al inicio
+            insertFirst(nuevo, prioridad); //Se inserta el nuevo nodo al inicio
         }
         else if (posicionK < 0 || posicionK > length()) {
             throw new MensajeException("Posición fuera de rango.");
         }
         else{ //Caso contrario
-            Nodo<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior al nodo del medio
-            Nodo<E> nodoMedio = searchNodoK(posicionK); //El nodo del medio se refiere a el nodo el cual se desplazara de su posición
+            NodoPrioridad<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior al nodo del medio
+            NodoPrioridad<E> nodoMedio = searchNodoK(posicionK); //El nodo del medio se refiere a el nodo el cual se desplazara de su posición
             nuevoNodo.setSiguiente(nodoMedio); //El nuevo nodo apuntara al nodo medio (nodo desplazado)
             nodoAnterior.setSiguiente(nuevoNodo); //El nodo anterior apuntara al nuevo nodo
         }
     }
 
     //Inserta el nuevo nodo al final de la lista
-    public void insertLast(E nuevo) throws MensajeException{
-        Nodo<E> nuevoNodo = new Nodo<E> (nuevo); //Se crea un nuevo nodo con el nuevo elemento
+    public void insertLast(E nuevo, int prioridad) throws MensajeException{
+        NodoPrioridad<E> nuevoNodo = new NodoPrioridad<E> (nuevo, prioridad); //Se crea un nuevo nodo con el nuevo elemento
         nuevoNodo.setSiguiente(null); //El siguiente del nuevo nodo apunta a null
         if (isEmpty()){ //Si la lista esta vacía
             //nuevoNodo.setSiguiente(null);
@@ -159,7 +165,7 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
         }
         else{ //Caso contrario la lista no este vacía
             //nuevoNodo.setSiguiente(null);
-            Nodo<E> nodoAnterior = searchNodoK(length()-1);//El nodo anterior sera el nodo que tenga la ultima posicion de la lista
+            NodoPrioridad<E> nodoAnterior = searchNodoK(length()-1);//El nodo anterior sera el nodo que tenga la ultima posicion de la lista
             nodoAnterior.setSiguiente(nuevoNodo); //Y el anterior nodo ultimo apunta al nuevo nodo
         }
     }
@@ -186,16 +192,16 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
             cabecera.setSiguiente(cabecera.getSiguiente().getSiguiente());
             return;
         }
-        Nodo<E> nodoEliminado = searchNodoK(posicionK); //nodoEliminado es el nodo en la posicion del nodo que se quiere eliminar
+        NodoPrioridad<E> nodoEliminado = searchNodoK(posicionK); //nodoEliminado es el nodo en la posicion del nodo que se quiere eliminar
         if (nodoEliminado != null){
-            Nodo<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior que apunta al nodo que se quiere eliminar
+            NodoPrioridad<E> nodoAnterior = searchNodoK(posicionK-1); //El nodo anterior es el nodo anterior que apunta al nodo que se quiere eliminar
             nodoAnterior.setSiguiente(nodoEliminado.getSiguiente()); //El nodo anterior al nodo eliminado apunta al siguiente del nodo eliminado
         }
     }
 
     //Recorrido de la lista enlazada
     public void recorridoLista() {
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista
             System.out.println(nodoTemporal.getValor()); //Imprime el valor de cada elemento de la lista
             nodoTemporal = nodoTemporal.getSiguiente(); //Y el nodo actual pasa a tener el valor del siguiente del nodo actual
@@ -203,15 +209,15 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
     }
 
     //Imprime la lista enlazada
-    public void print() throws MensajeException{
+    public void print(){
         if (isEmpty()){ //Si la lista esta vacía
-            throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
+            System.out.println("[Lista vacía]");
         }
         System.out.println(toString());
     }
 
     public String toString() {
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         StringBuilder lista = new StringBuilder();
         lista.append("[");
         while(nodoTemporal != null){ //Ciclo que verifica que no se termino de recorrer la lista
@@ -226,11 +232,11 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
     }
 
     //Imprime la lista enlazada de forma invertida
-    public void printInverso() throws MensajeException{
+    public void printInverso() throws MensajeException {
         if(isEmpty()){
-            throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
+            System.out.println("[Lista vacía]");
         }
-        Nodo<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
         Pila<E> invertido = new Pila<>(); //Se crea una nueva lista de tipo Pila
 
         while(nodoTemporal != cabecera){ //Ciclo que verifica que no se llego al inicio de la lista
@@ -248,5 +254,19 @@ public class ListaEnlazadaPrioridad<E> implements ListaTDA<E> {
         }
         listaInvertida.append("]");
         System.out.println(listaInvertida.toString());
+    }
+
+    //Obtiene la tarea de mayor prioridad
+    public E mayorPrioridad() throws MensajeException {
+        if(isEmpty()){
+            throw new MensajeException("Lista vacía, no se puede imprimir nada."); //Lanza un mensaje
+        }
+        NodoPrioridad<E> nodoTemporal = cabecera.getSiguiente(); //Se asigna el valor del primer nodo a la variable nodoTemporal
+        ColaDePrioridad<E> mayorPrioridad = new ColaDePrioridad<>(); //Se crea una nueva lista de tipo ColaDePrioridad
+        while(nodoTemporal != cabecera){ //Ciclo que verifica que no se llego al inicio de la lista
+            mayorPrioridad.enqueue(nodoTemporal.getValor(), nodoTemporal.getPrioridad());
+            nodoTemporal = nodoTemporal.getSiguiente();
+        }
+        return mayorPrioridad.frontSublista();
     }
 }
