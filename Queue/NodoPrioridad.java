@@ -3,7 +3,7 @@ package Queue;
 public class NodoPrioridad<E> {
     private E valor; //Información del nodo
     private int prioridad; // Nivel de prioridad o peso del nodo
-    private LinkedList.Nodo<E> siguiente; //Referencia al siguiente nodo o null(si la lista esta vacía)
+    private NodoPrioridad<E> siguiente; //Referencia al siguiente nodo o null(si la lista esta vacía)
 
     //Constructor que inicializa la información del nodo con su valor y la referencia del
     //siguiente apunta a null
@@ -21,11 +21,11 @@ public class NodoPrioridad<E> {
         this.valor = valor;
     } //Modifica el valor del nodo
 
-    public LinkedList.Nodo<E> getSiguiente(){
+    public NodoPrioridad<E> getSiguiente(){
         return siguiente;
     } //Retorna la referencia del siguiente del nodo
 
-    public void setSiguiente(LinkedList.Nodo<E> siguiente){
+    public void setSiguiente(NodoPrioridad<E> siguiente){
         this.siguiente = siguiente;
     } //Modifica la referencia del siguiente al nodo
 
